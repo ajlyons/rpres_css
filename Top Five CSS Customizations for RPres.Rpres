@@ -1,0 +1,292 @@
+<style>
+.reveal h1, .reveal h2, .reveal h3 {
+  word-wrap: normal;
+  -moz-hyphens: none;
+}
+.small-code pre code {
+  font-size: 1em;
+}
+.midcenter {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+}
+.footer {
+    color: black; background: #E8E8E8;
+    position: fixed; top: 90%;
+    text-align:center; width:100%;
+}
+.pinky .reveal .state-background {
+  background: #FF69B4;
+} 
+.pinky .reveal h1,
+.pinky .reveal h2,
+.pinky .reveal p {
+  color: black;
+}
+</style>
+
+Top Five CSS Customizations for R Presentations
+========================================================
+author: Andy Lyons
+date: September, 2014
+
+R-Presentations
+=========================================================
+class: small-code
+
+The presentations feature of [RStudio](http://www.rstudio.com) is awesome. You can put together a nice-looking presentation relatively quickly that you can then export to HTML5 (complete with transitions) or PDF. 
+
+RStudio will execute any R code in your presentation when you export it, so any syntax errors will be flagged (it won't export). To top it off, the whole thing is reproducible. 
+
+Customizing R-Presentations with CSS
+=========================================================
+class: small-code
+
+However the slide layout and styling options in the current version of RStudio (0.98) are rather limited. R-Presentations will undoubtedly support more options in future versions, but in the meantime you can customize the look of your slides using CSS. 
+
+I am definitely not a CSS guru, but with a bit of trial and error I was able to make several customizations for my [first R-Presentation](http://rpubs.com/ajlyons/rspatialdata) [[rpres file](https://github.com/ajlyons/rspatialdata/blob/master/Spatial-data-in-R.Rpres)] to get it to look just how I wanted.
+
+Below are my top-five CSS customizations for R-Presentations.
+
+
+But first: Where do you define custom styles?
+=========================================================
+class: small-code
+
+Styles that you will use throughout the presentation should be defined at the very top of your RPres file, before the title slide. This includes any tweaks you make to the built-in styles. For example, the beginning of your RPres file may look like:
+
+<pre style="padding:0.5em;">
+&lt;style&gt;
+.footer {
+    color: black;
+    background: #E8E8E8;
+    position: fixed;
+    top: 90%;
+    text-align:center;
+    width:100%;
+}
+&lt;/style&gt;
+
+A Statistical Analysis Cal Football 2013: What Went Wrong?
+&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;
+author: Sonny Dykes
+date: December 7, 2013
+</pre>
+
+But first: Where do you define custom styles?
+=========================================================
+title: false
+class: small-code
+
+
+You can also save your custom styles in a *.css file, and load the stylesheet in the title slide using the css field. 
+
+
+<pre style="padding:0.5em;">
+My Presentation
+&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;
+author: John Doe
+css: custom.css
+</pre>
+
+
+
+Applying Global Styles 
+========================================================
+class: small-code
+
+To apply custom styles, first note that customizing the appearance of your presentation with CSS styles requires using HTML codes instead of the simplified markdown syntax. But don't worry if you haven't done much HTML editing, it's not that hard.
+
+After you define global styles, you can apply them to specific elements in your presentation by using the 'class' argument in the HTML tag. For example many styles can be applied with the \<div\> tag, which defines a block of text (and other content) on a web page:
+
+```
+<div class="footer">This block of text will appear with the 'footer' style</div>
+```
+
+
+
+Defining Styles for Individual Elements
+========================================================
+class: small-code
+
+You can also define styles for individual elements using the 'style' argument in the tag. 
+
+```
+<span style="font-weight:bold; color:red;">This text will appear red and bold</span>
+```
+
+Or you can also combine these approaches -- in other words invoke a global style using the 'class' argument, and an individual style with the 'style' argument. The browser will apply the global style first, and then the individual style. For example:
+
+```
+<div class="footer" style="margin-top:-200px;">
+This block of text will be shown with the global 'footer' style, but it will be shifted up by 200 pixels because we have assigned a negative value to the 'margin-top' property in the 'style' argument of the div tag.
+</div>
+```
+
+Now on to the CSS Customizations
+====================================================
+title: false
+
+<div style="font-weight:bold; border: 1px solid blue; color:red;position: fixed; top:40%; text-align:center;left:20%;padding:1em;">Now on to the CSS Customizations!</div>
+
+
+1. Get Rid of Auto-hyphenation in Slide Titles
+====================================================
+class: small-code
+
+I was unpleasantly surprised to see my slide titles automatically hyphenated. You can get rid of this annoying behavior by adding the following tweaks to some default styles (at the top of your RPres)
+
+```
+<style>
+.reveal h1, .reveal h2, .reveal h3 {
+  word-wrap: normal;
+  -moz-hyphens: none;
+}
+</style>
+```
+
+2. Reduce the Font Size of Code
+====================================================
+class: small-code
+
+I thought the font size of code output was much too big when I exported my presentation to HTML. You can adjust this by defining an alternative style and then using it as the 'class' for individual slides.
+
+```
+<style>
+.small-code pre code {
+  font-size: 1em;
+}
+</style>
+```
+
+Then we specify this style as the 'class' for individual slides:
+
+<pre style="padding:0.5em;">
+All About Cars
+&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;&#61;
+class: small-code
+</pre>
+
+3. Add a Footer
+====================================================
+class: small-code
+
+The current version of RStudio allows you to create slides with a two-column layout. This is great, but often we want to add a textbox that spans both columns, for example a footer. You can do this by defining a global style called 'footer' that uses fixed positioning to 'float' above other elements on the slide. 
+
+The problem with this however is that where the footer should appear may vary from slide to slide. To tweak the location of the footer on individual slides, when you call it you can also specify a vertical and/or horizontal offset using one of the _margin_ properties. 
+
+Footer example:
+====================================================
+class: small-code
+
+Top of RPres:
+
+```
+.footer {
+    color: black; background: #E8E8E8;
+    position: fixed; top: 90%;
+    text-align:center; width:100%;
+}
+```
+
+To add a full-width footer to an individual slide, you create a block of text with the `<div>` tag and tell it to use the 'footer' class. If you're using a two-column layout, put the `<div>` block with the footer text _before_ everything else.
+
+```
+<div class="footer" style="margin-top:-150px;font-size:80%;">
+This text is my footer text<br>
+Normally, the top of the text block would appear 90% of the way down the slide (i.e., at the bottom), because that is how the 'top' property is defined in the 'footer' style. However this particular footer wraps onto multiple lines, so we shift it up by specifying a negative value for the 'margin-top' property.</div>
+```
+
+Footer example:
+====================================================
+class: small-code
+
+<div class="footer" style="margin-top:-150px;font-size:80%;">
+This text is my footer text<br>
+Normally, the top of the text block would appear 90% of the way down the slide (i.e., at the bottom), because that is how the 'top' property is defined in the 'footer' style. However this particular footer wraps onto multiple lines, so we shift it up by specifying a negative value for the 'margin-top' property.</div>
+
+```{r}
+summary(cars)
+```
+
+***
+
+```{r, out.width=250, out.height=250, fig.align="center", cache=TRUE}
+x <- (0:60)/10; y <- sin((0:60)/10)
+plot(x, y, type="l")
+```
+
+4. Controlling the Placement of an External Image
+====================================================
+class: small-code
+
+R-Presentation has a convenient short code for embedding an image file on a slide, but if you want it to go somewhere specific (e.g., the center), you'll probably need to use CSS. I dealt with this by creating a global style that would place the content in the very middle of the slide, and then add an appropriate vertical or horizontal shift for individual images.
+
+```
+<style>
+.midcenter {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+}
+</style>
+```
+
+4. Controlling the Placement of an External Image
+====================================================
+title: false
+class: small-code
+
+To place an image on an individual slide, wrap the \<img\> tag in a \<div\> tag. If you want the image to appear _exactly_ in the center of the slide, use the _midcenter_ style and then shift it up and to the left by half the image dimensions with the _margin-left_ and _margin-top_ properties.
+
+```
+<div class="midcenter" style="margin-left:-300px; margin-top:-300px;">
+<img src="flowchart_600x600.png"></img>
+</div>
+```
+
+The image is 600x600 pixels, so we offset from the center by -300. See how this looks on the next slide.
+
+4. Controlling the Placement of an External Image
+====================================================
+title: false
+
+<div class="midcenter" style="margin-left:-300px; margin-top:-300px;">
+<img src="flowchart_600x600.png"></img>
+</div>
+
+
+5. Display an Image with a Transparent Background
+====================================================
+class: small-code
+
+Modern browsers support transparent backgrounds when displaying images, but unfortunately when you export a R Presentation from RStudio all transparency in external image files is 'overridden' by some additional styles that applied to images by default.
+
+To preserve the transparency, you can manually remove the problematic properties in your \<img\> tag:
+
+```
+<img src="olympic-logo_800x400.png" style="background-color:transparent; border:0px; box-shadow:none;"></img>
+```
+
+See how this looks on the next slide.
+5. Display an Image with a Transparent Background
+====================================================
+type: pinky
+title: false
+
+<img class="midcenter" style="margin-left:-400px; margin-top:-200px; background-color:transparent; border:0px; box-shadow:none;" src="olympic-logo_800x400.png"></img>
+
+
+Custom Slide Types
+====================================================
+
+If you wish to apply several style changes at once, you can also define a new slide type. For details, see [Customizing Fonts and Appearance](https://support.rstudio.com/hc/en-us/articles/200532307-Customizing-Fonts-and-Appearance).
+
+<div style="font-weight:bold; color:red;position: fixed; top:40%; text-align:center;left:20%;padding:1em;">What are *your* favorite CSS customizations?</div>
+
+<div style="position:fixed; top:65%;text-align:center;width:100%;">If you have favorite customizations, please leave a comment!</div>
+
+<div class="footer" style="margin-top:-50px;font-size:80%;">
+RPres file for this presentation at <a href="https://github.com/ajlyons/rpres_css">https://github.com/ajlyons/rpres_css</a></div>
+
